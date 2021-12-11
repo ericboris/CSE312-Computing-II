@@ -1,0 +1,375 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{fullpage}
+
+\usepackage[x11names, rgb]{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{decorations,arrows,shapes}
+
+\usepackage{etoolbox}
+\usepackage{enumerate}
+\usepackage{listings}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\V}{Var}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\f}{\frac}
+
+
+\newcommand{\nopagenumbers}{
+    \pagestyle{empty}
+}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\providetoggle{questionnumbers}
+\settoggle{questionnumbers}{true}
+\newcommand{\noquestionnumbers}{
+    \settoggle{questionnumbers}{false}
+}
+
+\newcounter{questionCounter}
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.4em}%
+        \noindent{\bf \iftoggle{questionnumbers}{#1: }{}#2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+}{$ $\newpage}
+
+\newcounter{partCounter}[questionCounter]
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+\def\show#1{\ifdefempty{#1}{}{#1\\}}
+
+\newcommand{\header}{%
+\begin{center}
+    {\Large \show\myhwname}
+    \show\myname
+    \show\myemail
+    \show\mysection
+    \today
+\end{center}}
+
+\usepackage{hyperref} % for hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\newcommand{\myhwname}{Hello}
+\newcommand{\myname}{Test}
+\newcommand{\myemail}{}
+\newcommand{\mysection}{Se}
+
+\noquestionnumbers
+\nopagenumbers
+
+%%%%%%%%%%%%%%%%%% Begin the Document %%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+%\header
+\begin{flushleft}
+CSE 312\\
+HW 1
+\end{flushleft}
+
+%--------------- Problem 1 ---------------%
+\begin{question}{Problem 1}
+
+% Problem 1a
+\begin{part}
+
+\textbf{Answer:} \fbox{$11! = 39,916,800$}
+
+\textbf{Explanation:} 
+There are 11 people total so there are 11 ways of choosing the first person, 10 of choosing the second, 9 the third, and so on down to 1 the eleventh. That is, 11 times 10 times 9 ... or 11!.
+\end{part}
+
+% Problem 1b
+\begin{part}
+
+\textbf{Answer:} \fbox{$2! * 3! * 4! * 5! = 34,560$}
+
+\textbf{Explanation:} 
+There are $4 * 3 * 2 * 1 = 4!$ ways of arranging the four people in group A. Similarly, there are 5! and 2! ways of arranging the people in B and C, respectively. There are 3! ways of arranging the three groups with each other. By the product rule these four factorials are multiplied together for the total permuations. 
+\end{part}
+
+% Problem 1c
+\begin{part}
+
+\textbf{Answer:} \fbox{$4! * 8! = 967,680$}
+
+\textbf{Explanation:} 
+As before, there are 4! ways of the people in group A. There are 7 people in the combined groups B and C and including group A as a single, indivisible group makes 7 people and 1 group or just 8 people. Therefore, there are 8! ways of arranging group A in with the combined groups B and C. The total permutations are given by the product rule.
+\end{part}
+
+% Problem 1d
+\begin{part}
+
+\textbf{Answer:} \fbox{$11! - (10! * 2!) = 32,659,200$}
+
+\textbf{Explanation:} 
+The possible permutations with the restriction on group C can be found by the method of complements, i.e. the difference between the total permutations without restrictions and the complement of the restriction. In this case, the complement of the restriction is the permutations of the ways group C could be together, 2!, times number of ways group C could be arranged with the remaining 9 people (with group C included as an additional person) or 10!. 
+\end{part}
+
+\end{question}
+
+%--------------- Problem 2 ---------------%
+\begin{question}{Problem 2}
+
+% Problem 2a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{15!}{2!2!3!4!4!} = 94,594,500$}
+
+\textbf{Explanation:}  
+There are a total of 15 cards so there are 15! permutations of those cards, but this over counts. There are 2 jacks which can be arranged 2! ways. If the order of these jacks doesn't matter then their permutations should be removed from the total. This holds for the 2 queens, 3 kings, 4 tens, and 4 aces. By partitions, removing each permutation of cards grouped by rank from the total permutations yields the correct count. 
+\end{part}
+
+% Problem 2b
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{15!}{3!3!4!5!} = 12,612,600$}
+
+\textbf{Explanation:}  
+Similar to the above problem except now the cards are now grouped by suit. 15! for permutations of 15 cards over counts. There are 3 clubs with 3! permutations, 3 diamonds with 3! permutations, 4! permutations of hearts, and 5! for spades. Removing the product of each of these permutations from the total yeilds the correct count. 
+\end{part}
+
+\end{question}
+
+%--------------- Problem 3 ---------------%
+\begin{question}{Problem 3}
+
+% Problem 3a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{6!}{2!(6-2)!} * 5^2 * 7^4 = 900,375$}
+
+\textbf{Explanation:}  
+There are a total of 6 notes that will be played and of these 2 will be black and 4 will be white. Choosing 2 of the 6 to be black leaves 4 unchosen spaces that have to be white keys, hence, $\frac{6!}{2!(6-2)!} = 15$. There are 5 black keys from which to play the 2 notes and any of these can be played twice. There are, therefore, $5 * 5 = 5^2$ ways of playing 2 black notes given 5 black keys. Simlarly, there are 7 white keys and 4 white notes to play. Any of these 7 can be played up to 4 times or $7 * 7 * 7 * 7 = 7^4$. By the product rule, multipling the choice of which of the 6 keys should be black with which of the black keys to play and with which of the white keys to play yields the total permutations. 
+\end{part}
+
+% Problem 3b
+\begin{part}
+
+\textbf{Answer:} \fbox{$[\frac{6!}{2!(6-2)!} * 5^2 * 7^4] - [5^2 * 7^4 * 3] = 720,300$}
+
+\textbf{Explanation:} 
+The method of complements can be used to find number of possible melodies in this case. The number of total melody permutations is already known. The complement of white notes not being adjacent is the number of ways the 4 white notes can be adjacent. That is (by the product rule) there are $5^2$ ways of playing 2 repeatable black keys out of 5, $7^4$ ways of playing 4 repeatable white keys out of 7, and 3 ways of arranging the group of white keys amongst the black keys, i.e. before them, between them, or after them. Subtracting this complement from the total permutations of melodies yields the result. 
+\end{part}
+
+% Problem 3c
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{6!}{2!(6-2)!} * \frac{5!}{(5-2)!} * \frac{7!}{(7-4)!} = 252,000$}
+
+\textbf{Explanation:}  
+As before, there are $\frac{6!}{2!(6-2)!} = 15$ ways to choose which of the 6 will be the 2 black keys and which will be the 4 white keys. Now, because repetition is not allowed, 2 unique black keys out of the 5 will be chosen and 4 of the 7 white, i.e $\frac{5!}{(5-2)!} = 20$ and $\frac{7!}{(7-4)!} = 840$ permutatations respectively. The final result is given by the product rule.
+\end{part}
+
+% Problem 3d
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{6!}{2!(6-2)!} * \frac{5!}{(5-2)!} * \frac{7!}{4!(7-4)!} = 10,500$}
+
+\textbf{Explanation:} 
+Similar to above, there are $\frac{6!}{2!(6-2)!} = 15$ ways to choose which of the 6 will be the 2 black keys and which will be the 4 white keys. And there are still $\frac{5!}{(5-2)!} = 20$ ways to select the distinct black keys. However, now of the 4 white keys chosen, there is only one way to arrange them, ascending. So there are $\frac{7!}{4!(7-4)!} = 35$ ways to choose 4 keys of the 7 when there is only one ordering. The final result is found via the product rule. 
+\end{part}
+ 
+\end{question}
+
+
+%--------------- Problem 4 ---------------%
+\begin{question}{Problem 4}
+
+% Problem 4a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{13!}{5!(13-5)!} = 1,287$}
+
+\textbf{Explanation:}  
+There will be 13 upwards and rightwards steps with a total of 13! permutations. However, because downwards and leftwards steps are not permitted, choosing the locations of the 5 upwards movements also determines the locations of the rightwards movements. That is choosing 5 steps of the 13, ${13\choose 5} = \frac{13!}{5!(13-5)!}$ is all that is required for knowing the total permutations of steps in the plane. 
+\end{part}
+
+% Problem 4b
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{8!}{3!(8-3)!} = 56$}
+
+\textbf{Explanation:} 
+Similar to the above, there are a total of 8 steps to choose from, 5 will be righwards and 3 upwards. Choosing the 3 of the 8, ${8\choose 3} = \frac{8!}{3!(8-3)!}$ steps will tell the total permutations of steps in the plane. 
+\end{part}
+
+% Problem 4c
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{13!}{5!(13-5)!} * \frac{8!}{3!(8-3)!} = 72,072$}
+
+\textbf{Explanation:}  
+There are $\frac{13!}{5!(13-5)!} = 1,287$ ways to get from (0,0) to (8,5) and $\frac{8!}{3!(8-3)!} = 56$ ways to get from (8,5) to (13,8). Therefore, by the product rule there are $\frac{13!}{5!(13-5)!} * \frac{8!}{3!(8-3)!} = 1,287 * 56 = 72,072$ ways to get from (0,0) to (13,8) while passing through point (8,5). 
+\end{part}
+
+% Problem 4d
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{21!}{8!(21-8)!} - [\frac{13!}{5!(13-5)!} * \frac{8!}{3!(8-3)!}] = 131,418$}
+
+\textbf{Explanation:}  
+Finding the paths through the plane from (0,0) to (13,8) that don't pass through (8,5) is done by the method of complements. The total possible paths from (0,0) to (13,8) is the factorial of the sum of rightwards and upwards steps, i.e. $(13 + 8)! = 21!$. But as above, when movement only occurs in righwards and upwards directions, $21!$ over counts and the total steps through the plane is in fact $\frac{21!}{8!(21-8)!} = 203,490$. The complement of steps that do not pass through (8,5) are the paths that do pass though (8,5) or $\frac{13!}{5!(13-5)!} * \frac{8!}{3!(8-3)!}$ from above. Therefore the difference between total steps through the plane and the steps that pass through (8,5) yields the desired result. 
+\end{part}
+\end{question}
+
+%--------------- Problem 5 ---------------%
+\begin{question}{Problem 5}
+
+\textbf{Answer:} \fbox{$[3! * 5!] + [6 * \frac{5!}{2!} * 5] = 2,520$}
+
+\textbf{Explanation:}  
+There are two cases. In case 1, the 3 courses for which CSE 333 is a prerequisite are taken over 3 quarters so there are 3! ways to arrange which of these courses are taken in that span. There are 5! ways to arrange the 5 remaining courses that aren't and don't have prerequisites. The total possible permutations of case 1 are given by the product rule, i.e. $3! * 5! = 720$. In case 2, the three courses for which CSE 333 is a prerequisite are taken over 2 quarters with 2 of them being taken at the same time. Because order doesn't matter when two courses are taken simultaneously there are 6 possible arrangements. Again, there are 5 non-prerequsite courses that can be taken at any time. However in case 2, 2 of these courses must be taken simultaneously (because one quarter is filled by two courses with CSE 333 as a requirement) so there are $\frac{5!}{2!}$ possible combinations of them. The pairing of non-prerequisite courses can occur during any of the 5 quarters for a 5 factor increase in permutations. By the product rule the factors of case 2 are multiplied together, $6 * \frac{5!}{2!} * 5 = 1800$, for the total permutations. The total permutations of courses is given by the sum of case 1 and case 2. 
+\end{question}
+
+%--------------- Problem 6 ---------------%
+\begin{question}{Problem 6}
+
+% Problem 6a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{7!}{2!3!} * \frac{9!}{3!(9-3)!} * \frac{12!}{4!(12-4)!} = 17,463,600$}
+
+\textbf{Explanation:} 
+A team is made of of 7 people where the 2 Beaters and 3 Chasers are interchangable for $\frac{7!}{2!3!}$ arrangements. To choose 3 witches from a group of 9, use $\frac{9!}{3!(9-3)!}$, similarly, to choose 4 wizards from a group of 12, use $\frac{12!}{4!(12-4)!}$. The total permutations of teams is given by the product formula. 
+\end{part}
+
+% Problem 6b
+\begin{part}
+
+\textbf{Answer:} \fbox{$[\frac{7!}{3!2!} * \frac{2!}{0!(2-0)!} * \frac{10!}{4!(10-4)!} * \frac{9!}{3!(9-3)!}] + [\frac{6!}{3!2!} * \frac{2!}{1!(2-1)!} * \frac{10!}{3!(10-3)!} * \frac{9!}{3!(9-3)!}] = 8,618,400$}
+
+\textbf{Explanation:} 
+There are two cases. Case 1, neither of the wizards who can only be Seekers are chosen. In this case, a team is made of 7 players where the 2 Beaters and 3 Chashers are interchangable, $\frac{7!}{3!2!} = 420$. Neither of the 2 wizards are chosen, so $\frac{2!}{0!(2-0)!} = 1$, i.e. the permutations are unaffected. From the remaining 10 wizards, 4 are chosen so there are $\frac{10!}{4!(10-4)!} = 210$ combinations. And there are 3 witches chosen from the 9 available for $\frac{9!}{3!(9-3)!} = 84$ combinations. The product rule of the above permutations yields 7,408,800 permutations. In case 2, one of the wizards who can only play seeker is chosen. This case is similar to case 1 except, there are only 6 team spots left available with 2 Beaters and 3 Chasers for $\frac{6!}{3!2!} = 60$ partitions. There is 1 wizard chosen from the 2 that can play Seeker for 2 permutations. There are still 10 wizards to choose from but only 3 more can be chosen for $\frac{10!}{3!(10-3)}! = 120$ combinations. And, as before, 3 witches out of 9 need to be chosen for 84 combinations. Applying the product rule to case 2 yields 1,209,600 permutations. For the total permutations of both cases their sum is taken for a total of 8,618,400 permutations. 
+\end{part}
+
+% Problem 6c
+\begin{part}
+
+\textbf{Answer:} \fbox{$[\frac{7!}{2!3!} * \frac{9!}{3!(9-3)!} * \frac{12!}{4!(12-4)!}] - [\frac{7!}{2!3!} * \frac{7!}{1!(7-1)!} * \frac{10!}{2!(10-2)!}] = 17,331,300$}
+
+\textbf{Explanation:}  
+This problem uses method of complements. First, as in part a, get the total number of permutations of the team, without restrictions. Then, from that total subtract the complement of the restriction, i.e. a team where the 2 named wizards and 2 named witches are selected. So, as before, choose a team of 7 where the 2 Beaters and 3 Chasers are interchangable. Assume the 2 named wizards and 2 named witches are already selected and fill the team positions. Choose 2 wizards from the remaining 10 for  $\frac{10!}{2!(10-2)!} = 45$ combinations and 1 witch from the remaining 7 for $\frac{7!}{1!(7-1)!} = 7$ combinations. Use the product rule to obtain the total permutations for this team, i.e. $420 * 45 * 7 = 132,300$. Subtract these permutations from the total for the final result. 
+\end{part}
+
+\end{question}
+
+%--------------- Problem 7 ---------------%
+\begin{question}{Problem 7}
+
+% Problem 7a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{14!}{2^7 * 7!} = 135,135$}
+
+\textbf{Explanation:} 
+Choose 7 pairs of students from the total 14 for $\frac{14!}{7!} = 17,297,280$ pairs. Divide that result by $2^7 = 128$ to account for the fact that the order of students in each pair doensn't matter. 
+\end{part}
+
+% Problem 7b
+\begin{part}
+
+\textbf{Answer:} \fbox{$7! = 5040$}
+
+\textbf{Explanation:} 
+Consider the 7 students as fixed and assign the 7 TA's to each of those students for a total of 7! permutations. 
+\end{part}
+
+% Problem 7c
+\begin{part}
+
+\textbf{Answer:} \fbox{$[\frac{14!}{2^7 * 7!}] - [\frac{3!}{2!(3-2)!} * \frac{12!}{2^6 * 6!}] = 103,950$}
+
+\textbf{Explanation:}  
+Use the method of complements. First, take the total possible teams without restrictions as in part a. Then, subtract from that the complement of the restriction. Here, the complement of the restriction are the permutations of teams where there are 2 TA's paired together. So, choose 2 of the 3 TA's to pair for $\frac{3!}{2!(3-2!} = 3$ combinations. Make pairs with the students and the remaining TA (who can now pair with anyone without pairing with another TA) for a total of $\frac{12!}{2^6 * 6!} = 10,395$ unique pairs. Use the product rule to find the complement and subtract this complment from the total teams for the final result. 
+\end{part}
+
+% Problem 7d
+\begin{part}
+
+\textbf{Answer:} \fbox{$[\frac{14!}{2^7 * 7!}] - [\frac{12!}{2^6 * 6!}] = 124,740$}
+
+\textbf{Explanation:}  
+Similar to part c, with method of complements except this time there is only one unique pair to account for, namely Harry and Hermoine. So, find the total pairings. Subtract from that the complement of the restriction, i.e. the number of paings where Harry and Hermoine are together. There is only one pair where they are together leaving only the remaining pairings to be accounted for, or $\frac{12!}{2^6 * 6!} = 10,395$ pairs. Subtract this complement from the total pairs for the total result. 
+\end{part}
+\end{question}
+
+%--------------- Problem 8 ---------------%
+\begin{question}{Problem 8}
+
+% Problem 8a
+\begin{part}
+
+\textbf{Answer:} \fbox{$Yes.$}
+
+\textbf{Explanation:}  
+The only card that the Maestro could through that could win a trick would be the Queen of Diamonds. However this card will be drawn immediately by the lead of Ace of Diamonds, losing and being added to the player's taken tricks. The player will then lead the remaining hands with trumps and the highest cards from their respective suits - winning each trick. 
+\end{part}
+
+% Problem 8b
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{14!}{5!(14-5)!} = 2002$}
+
+\textbf{Explanation:} 
+The possible hands that the Maestro could have are the 5 card combinations of the remaining 14 unseen cards. 
+\end{part}
+
+% Problem 8c
+\begin{part}
+
+\textbf{Answer:} \fbox{$66 - (11 * 3 + 10 + 4) = 19$}
+
+\textbf{Explanation:}  
+The player has in their hand 47 of the 66 points they need to win. Therefore they need the Maestro to be holding at least 19 points to win. 
+\end{part}
+
+% Problem 8d
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{10!}{5!(10-5)!} = 252$}
+
+\textbf{Explanation:}  
+Of the remaining 14 cards, if the Maestro is holding even 1 of the Tens or the Ace, the player will win the hand because even the lowest scoring hand with 1 Ten, 3 Jacks, and 1 Queen is worth nineteen points. But, any hand made up of cards not including any Tens or the Ace will cause the player to lose because the highest scoring hand, made of 3 Kings and 2 Queens is only worth eighteen points. Therefore, if the Maestro has any hand made up of the 10 cards that aren't Tens or Aces, the player will lose. There are $\frac{10!}{5!(10-5)!}$ ways for that to happen. 
+\end{part}
+
+% Problem 8e
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{252}{2002} = 0.1258741259 \approx 0.126$}
+
+\textbf{Explanation:}  
+Divide the hands in which the player loses by the total hands the Maestro could have for a probability of losing the deal. 
+\end{part}
+\end{question}
+
+%--------------- Problem 9 ---------------%
+\begin{question}{Problem 9}
+
+\textbf{Answer:} \fbox{$\frac{75!}{5!} = 2.067 * 10^{107}$}
+
+\textbf{Explanation:}  
+Imagine 70 split up as 70 ones. 5 dividers are required to split the ones into six groups. There are a total of 75 items to place. Hence, to divide 70 ones into six groups yields $\frac{75!}{5!}$ distinct arrangments. 
+\end{question}
+
+\end{document}

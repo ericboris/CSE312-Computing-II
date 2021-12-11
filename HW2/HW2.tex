@@ -1,0 +1,305 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{fullpage}
+
+\usepackage[x11names, rgb]{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{decorations,arrows,shapes}
+
+\usepackage{etoolbox}
+\usepackage{enumerate}
+\usepackage{listings}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\V}{Var}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\f}{\frac}
+
+
+\newcommand{\nopagenumbers}{
+    \pagestyle{empty}
+}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\providetoggle{questionnumbers}
+\settoggle{questionnumbers}{true}
+\newcommand{\noquestionnumbers}{
+    \settoggle{questionnumbers}{false}
+}
+
+\newcounter{questionCounter}
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.4em}%
+        \noindent{\bf \iftoggle{questionnumbers}{#1: }{}#2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+}{$ $\newpage}
+
+\newcounter{partCounter}[questionCounter]
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+\def\show#1{\ifdefempty{#1}{}{#1\\}}
+
+\newcommand{\header}{%
+\begin{center}
+    {\Large \show\myhwname}
+    \show\myname
+    \show\myemail
+    \show\mysection
+    \today
+\end{center}}
+
+\usepackage{hyperref} % for hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\newcommand{\myhwname}{Hello}
+\newcommand{\myname}{Test}
+\newcommand{\myemail}{}
+\newcommand{\mysection}{Se}
+
+\noquestionnumbers
+\nopagenumbers
+
+%%%%%%%%%%%%%%%%%% Begin the Document %%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+%\header
+\begin{flushleft}
+CSE 312\\
+HW 2
+\end{flushleft}
+
+%--------------- Problem 1 ---------------%
+\begin{question}{Problem 1}
+
+% Problem 1a
+\begin{part}
+
+\textbf{Answer:} \fbox{$1 - [\frac{|A| + |H| - |A \cup H|}{\Omega}] \approx 0.629$}
+
+\textbf{Explanation:} 
+There are $|A| = |H| = {15 \choose 5} = \frac{15!}{5!(15-5)!} = 3,003$ ways of choosing 5 card hands with no Spades and equally many ways of choosing no Hearts. The union of no Aces and no Hearts is $|A \cup H| = {10 \choose 5} = \frac{10!}{5!(10-5)!} = 252$, so by inclusion-exclusion, there are $|A| + |H| - |A \cup H| = 3,003 + 3,003 - 252 = 5,754$ ways of being dealt no Aces and no Hearts in a 5 card hand out of 20 cards. The total number of 5 card hands out of 20 cards is $\Omega = {20 \choose 5} = \frac{20!}{5!(20-5)!)} = 15,504$. The probability of a no Ace, no heart hand then is $\frac{5,754}{15,504} = 0.371130031$ and by complement, the probability of a hand with at least one Ace and at least one heart is $0.628869969$. 
+\end{part}
+
+% Problem 1b
+\begin{part}
+
+\textbf{Answer:} \fbox{$1 - \frac{|A \cup H| + |A \cup C| + |H \cup C| - |A| - |H| - |C| - |A \cup H \cup C|}{\Omega} \approx 0.468$}
+
+\textbf{Explanation:} 
+From part (a) above, we know the number of ways of being dealt a 5 card hand that has no Aces or no Hearts or no Clubs out of 20 cards to be $|A| = |H| = |C| = \frac{15!}{5!(15-5)!} = 3,003$. We also know by inclusion-exclusion that there are $|A \cup H| = |A \cup C| = |H \cup C| = 5,754$ ways of being not being dealt any pair of two suits. The number of ways of being dealt a 5 card hand out with no Aces, Hearts, nor Clubs is $|A \cup H \cup C| = \frac{5!}{5!(5-5)!)} = 1$, because there is only 1 way to recieve 5 cards out of 5. By inclusion-exclusion, there are $(3 * 5,754) - (3 * 3,003) - 1 = 8,252$ ways of being dealt no Aces, and no Hearts, and no Clubs. From above, we know there are $\Omega = \frac{20!}{5!(20-5)!)} = 15,504$ ways of being dealt a 5 card hand from 20 cards, so the probability of being dealt no Aces, and no Hearts, and no Clubs is $\frac{8,252}{15,504} = 0.532249742$. By complement the probability of being dealt a hand with at least one Ace, one heart, and one club is $0.467750258$.
+\end{part}
+
+\end{question}
+
+%--------------- Problem 2 ---------------%
+\begin{question}{Problem 2}
+
+% Problem 2a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{\frac{5!}{3!(5-3)!} * 6^3 * 3!}{\frac{30!}{(30 - 3)!}} = \frac{108}{203} \approx 0.532$}
+
+\textbf{Explanation:}
+There are $\frac{5!}{3!(5-3)!} = 10$ ways of choosing 3 days out of 5, there are $6^3 = 216$ ways of choosing from any of the 3 time slots, and there are $3! = 6$ ways of arranging the 3 exams. The total possible ways to arrange 3 exams onto 3 different days then are $10 * 216 * 6 = 12,960$. The total possible ways to assign 3 exams to the 30 possible date/time slots is $\frac{30!}{(30 - 3)!} = 24,360$. Therefore, there the probability of choosing 3 exams that don't share a day is  $\frac{12,960}{24,360} \approx 0.5320197044$.
+
+\end{part}
+
+% Problem 2b
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{\frac{5!}{3!(5-3)!} * 6^3}{\frac{30!}{3!(30-3)!}} = \frac{108}{203} \approx 0.532$}
+
+\textbf{Explanation:} 
+There are $\frac{5!}{3!(5-3)!} = 10$ ways of choosing 3 days out of 5 and there are $6^3 = 216$ ways of choosing from any of the 3 time slots. So, there are $10 * 216 = 2,160$ ways to schedule 3 exams on 3 different days. The total possible combinations of choosing any 3 slots for the exams from 30 total is $\frac{30!}{3!(30-3)!} = 4,060$. The probability of choosing from 3 separate days for the 3 exams is $\frac{2160}{4060} \approx 0.5320197044$. 
+\end{part}
+
+% Problem 2c
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{\frac{5!}{1!(5-1)!} * \frac{6!}{3!(6-3)!} * 3!}{\frac{30!}{(30 - 3)!}} = \frac{5}{203} \approx 0.025$}
+
+\textbf{Explanation:} 
+There are $\frac{5!}{1!(5-1)!} = 5$ ways of choosing 1 of the 5 days, there are $\frac{6!}{3!(6-3)!} = 20$ ways of choosing 3 time slots out of 6, and there are $3! = 6$ ways of arranging the 3 exams into those time slots. As in part (a), there are $\frac{30!}{(30 - 3)!} = 24,360$ ways of choosing 3 slots for exams out of 30. The probability of having 3 exams in 3 time slots on 1 day is $\frac{5 * 20 * 6}{24,360} \approx 0.02463054187$
+\end{part}
+
+% Problem 2d
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{\frac{5!}{1!(5-1)!} * \frac{6!}{3!(6-3)!}}{\frac{30!}{3!(30-3)!}} = \frac{5}{203} \approx 0.025$}
+
+\textbf{Explanation:}  
+There are $\frac{5!}{1!(5-1)!} = 5$ ways of choosing 1 of the 5 days for the exams and there are $\frac{6!}{3!(6-3)!} = 20$ ways of choosing 3 time slots out of 6. As in part (b), there are $\frac{30!}{3!(30-3)!} = 4,060$ ways of choosing 3 slots for exams out of 30. The probability of having 3 exams in 3 time slots on 1 day out of 5 is $\frac{5 * 20}{4,060} \approx 0.02463054187$
+\end{part}
+
+\end{question}
+
+%--------------- Problem 3 ---------------%
+\begin{question}{Problem 3}
+
+% Problem 3a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{\frac{6!}{3!(6-3)!} + \frac{7!}{3!(7-3)!} + \frac{8!}{3!(8-3)!}}{\frac{21!}{3!(21-3)!}} \approx 0.083$}
+
+\textbf{Explanation:} 
+There are $\frac{6!}{3!(6-3)!} = 20$ ways of choosing 3 of the 6 red balls, $\frac{7!}{3!(7-3)!} = 35$ ways of choosing 3 of the 7 green balls, and $\frac{8!}{3!(8-3)!} = 56$ ways of choosing 3 of the 8 blue balls. There are $20 + 35 + 56 = 111$ ways of choosing 3 balls of the same color. There are a total of $6 + 7 + 8 = 21$ balls so there are $\frac{21!}{3!(21-3)!} = 1,330$ total ways of choosing any 3 balls. The probability of choosing 3 balls of the same color is $\frac{111}{1,330} \approx 0.08345864662$. 
+\end{part}
+
+% Problem 3b
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{\frac{6!}{1!(6-1)!} * \frac{7!}{1!(7-1)!} * \frac{8!}{1!(8-1)!}}{\frac{21!}{3!(21-3)!}} \approx 0.253$}
+
+\textbf{Explanation:} 
+There are $\frac{6!}{1!(6-1)!} = 6$ ways of choosing one red ball, there are $\frac{7!}{1!(7-1)!} = 7$ ways of choosing one green ball, and there are $\frac{8!}{1!(8-1)!} = 8$ ways of choosing one blue ball so there are $6 * 7 * 8 = 336$ ways of choosing one ball of each color. From part (a) above there are $1,330$ total ways of choosing any 3 balls so the probabilty of choosing 3 balls of different colors is $\frac{336}{1,330} = 0.2526315789$. 
+\end{part}
+
+% Problem 3c
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{6^3 + 7^3 + 8^3}{21^3} \approx 0.116$}
+
+\textbf{Explanation:} 
+There are $6^3 = 216$ ways of choosing 3 red balls with replacement, there are $7^3 = 343$ ways of choosing 3 green balls with replacement, and there are $8^3 = 512$ ways of choosing 3 blue balls with replacement, so there are $216 + 343 + 512 = 1,071$ ways of choosing 3 balls of one color with replacement. With replacement, there are $21^3 = 9,261$ total ways of choosing any 3 balls so the probability of choosing 3 balls of the same color with replacement is $\frac{1,071}{9,261} \approx 0.1156462585$. 
+\end{part}
+
+% Problem 3d
+\begin{part}
+\textbf{Answer:} \fbox{$\frac{\frac{6!}{1!(6-1)!} * \frac{7!}{1!(7-1)!} * \frac{8!}{1!(8-1)!} * 3!}{21^3} \approx 0.218$}
+
+\textbf{Explanation:}  
+There are $\frac{6!}{1!(6-1)!} = 6$ ways of choosing one red ball, there are $\frac{7!}{1!(7-1)!} = 7$ ways of choosing one green ball, there are $\frac{8!}{1!(8-1)!} = 8$ ways of choosing one blue ball, and there are $3! = 6$ ways of arranging these 3 balls so there are $6 * 7 * 8 * 3! = 2,016$ ways of choosing one ball of each color. With replacement, there are $21^3 = 9,261$ total ways of choosing any 3 balls so the probability of choosing 3 balls of the same color with replacement is $\frac{2,016}{9,261} \approx 0.2176870748$. 
+\end{part}
+
+\end{question}
+
+%--------------- Problem 4 ---------------%
+\begin{question}{Problem 4}
+
+% Problem 4
+
+\textbf{Answer:} \fbox{$P(\text{Probability that choosing 26 random integers yields a pair that sums to 100}) = 1$}
+
+\textbf{Explanation:} 
+There are 49 integers in a list of odd integers from 1 to 97. 1 does not have a pair in the list that sums to 100 but every remaining number between 3 and 97 does. 3 pairs with 97, 5 with 95, 7 with 93 ... 47 with 53, and 49 with 51. There are 24 pairs of this sort. Let group A be the 24 integers from the lower half of the list, i.e. 3 to 49 and let group B be the 24 integers from the upper half of the list, i.e. 51 to 97. Assume the first 25 of 26 integers are randomly chosen from the list such that the integer 1 is chosen along with all of group A. No pairs will have yet been made. However, because all of A is already chosen and only integers from group B remain to be chosen, any integer chosen from B will have a pair in group A that has already been chosen. Therefore by the pigeonhole principle, the probability of choosing a pair from the list is 1. 
+\end{question}
+
+%--------------- Problem 5 ---------------%
+\begin{question}{Problem 5}
+
+% Problem 5a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{\frac{4}{50}}{\frac{53}{100}} = \frac{8}{53} \approx 0.151$}
+
+\textbf{Explanation:} 
+Let A be the event that one of the 2 headed coins is drawn and let B be the event that the flip came up heads. Then, because there are 4 two headed coins of the 50 $P(A) = \frac{4}{50}$ and because there are a total of 53 heads among the coin faces $P(B) = \frac{53}{100}$. The probability of A given B then, is $\frac{P(A \cap B)}{P(B)} = \frac{P(A)}{P(B)}$. The simplification in the numerator occurs because A is a subset of B. Thus, the probability of A given B is $\frac{\frac{4}{50}}{\frac{53}{100}} = \frac{8}{53} \approx 0.1509433962$. 
+\end{part}
+
+% Problem 5b
+\begin{part}
+
+\textbf{Answer:} \fbox{$1 - \frac{8}{53} = \frac{45}{53} \approx 0.849$}
+
+\textbf{Explanation:} 
+Given that a heads was flipped, the coin that was used must have been either a fair coin or a coin with two heads. The probability of it having been a two headed coin is known to be $\frac{8}{53} \approx 0.151$ from part (a). By complement therefore, the probability of it having been a fair coin is $1 - \frac{8}{53} = \frac{45}{53} \approx 0.8490566038$. 
+\end{part}
+
+% Problem 5c
+\begin{part}
+
+\textbf{Answer:} \fbox{$1 - \frac{2}{47} = \frac{45}{47} \approx 0.957$}
+
+\textbf{Explanation:}
+Let A be the event that one of the two tailed coins is drawn and let B be the event that tails was flipped. Then, because there is 1 two tailed coin of the 50 $P(A) = \frac{1}{50}$ and because there are a total of 47 tails among the coin faces $P(B) = \frac{47}{100}$. The probability of A given B then, is $\frac{P(A \cap B)}{P(B)} = \frac{P(A)}{P(B)}$. The simplification in the numerator occurs because A is a subset of B. Thus, the probability of A given B is $\frac{\frac{1}{50}}{\frac{47}{100}} = \frac{2}{47}$. By complement, the probability of it having been a fair coin is $1 - \frac{2}{47} = \frac{45}{47} \approx 0.9574468085$.
+\end{part}
+
+\end{question}
+
+%--------------- Problem 6 ---------------%
+\begin{question}{Problem 6}
+
+% Problem 6a
+\begin{part}
+
+\textbf{Answer:} \fbox{The King and Queen may never be drawn.}
+
+\textbf{Explanation:} 
+It could be the case, despite being vanishingly unlikely, that the King and Queen of Hearts are never shuffled onto the top of the deck and are thus never drawn. 
+\end{part}
+
+% Problem 6b
+\begin{part}
+
+\textbf{Answer:} \fbox{$\sum\limits_{i=1}^{\infty} an^i = \sum\limits_{i=1}^{\infty} \frac{2}{20}(\frac{18}{20})^i = \frac{\frac{2}{20}}{1 - \frac{18}{20}} = 1$}
+
+\textbf{Explanation:} 
+The probability that Alice draws the King or Queen on her first draw is $\frac{2}{20} = 0.1$. If she doesn't, there's a $\frac{18}{20} * \frac{2}{20} = 0.09$ probability that Bob does. If he doesn't, there's a $\frac{18}{20} * \frac{18}{20} * \frac{2}{20} = 0.081$ probability that Chris does. Then, if he doesn't, there's a $\frac{18}{20} * \frac{18}{20} * \frac{18}{20} * \frac{2}{20} = 0.0729$ probability that Alice does. This continues such that the probability of drawing the King or Queen on the ith draw is $\sum\limits_{i=1}^{\infty} an^i = \sum\limits_{i=1}^{\infty} \frac{2}{20}(\frac{18}{20})^i$. The total probability space therefore is $\frac{\frac{2}{20}}{1 - \frac{18}{20}} = 1$.
+\end{part}
+
+% Problem 6c
+\begin{part}
+
+\textbf{Answer:} \fbox{$A = \frac{100}{271} = 0.369, B = \frac{90}{271} = 0.332, C = \frac{81}{271} = 0.299, N = 0$}
+
+\textbf{Explanation:} 
+The formula for the probability of Alice winning is $\sum\limits_{i=1}^{\infty} an^{3i} = \sum\limits_{i=1}^{\infty} \frac{2}{20}(\frac{18}{20})^{3i}$. The $i$ exponent becomes $3i$ because Alice can win on the first, fourth, seventh, ... turns, or every third turn. Solving the sum shows her probability of her winning is $\frac{\frac{2}{20}}{1 - \frac{18}{20}^{3}} = 0.36900369$. 
+Similarly, the formula for the probability of Bob winning is $\sum\limits_{i=1}^{\infty} an^{3i + 1} = \sum\limits_{i=1}^{\infty} \frac{2}{20}(\frac{18}{20})^{3i + 1}$. The $i$ exponent becomes $3i + 1$ because Bob can win on the second, fifth, eigth, ... turns, or every third turn after the second turn. Solving the sum shows her probability of her winning is $\frac{\frac{2}{20}}{1 - \frac{18}{20}^{3}} * \frac{18}{20} = 0.332103321$. 
+And, the formula for the probability of Chris winning is $\sum\limits_{i=1}^{\infty} an^{3i + 2} = \sum\limits_{i=1}^{\infty} \frac{2}{20}(\frac{18}{20})^{3i + 2}$. The $i$ exponent becomes $3i + 2$ because Chris can win on the third, sixth, ninth, ... turns, or every third turn after the third turn. Solving the sum shows her probability of her winning is $\frac{\frac{2}{20}}{1 - \frac{18}{20}^{3}} * \frac{18}{20}^{2} = 0.2988929889$. 
+Finally, the total probability is $A + B + C + N = 1$ so rearranging for $N$ yields $1 - (A + B + C) = N$. Substituting results in $N$ such that $N = 1 - (\frac{\frac{2}{20}}{1 - \frac{18}{20}^{3}} + \frac{\frac{2}{20}}{1 - \frac{18}{20}^{3}} * \frac{18}{20} + \frac{\frac{2}{20}}{1 - \frac{18}{20}^{3}} * \frac{18}{20}^{2}) = 0$. 
+\end{part}
+
+\end{question}
+
+%--------------- Problem 7 ---------------%
+\begin{question}{Problem 7}
+
+% Problem 7a
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{\frac{9!}{2!(9-2)!}}{\frac{9!}{4!(9-4)!}} = \frac{1}{6} \approx 0.167$}
+
+\textbf{Explanation:} 
+Assume the Maestro already holds the King of Hearts. There are 9 cards that haven't been seen and the Meastro holds 4 so there are $\frac{9!}{4!(9-4)!} = 126$ possible hands he could have. Assuming the Maestro already holds the Ace and Ten of Spades, there are $\frac{7!}{2!(7-2)!} = 21$ ways he could hold the remaining 2 out of 7 cards. Therefore, the probability that he holds the Ace and Ten of Spades as well as the King of Hearts in his hand of 5 then is $\frac{21}{126} = \frac{1}{6} \approx 0.1666666667$. 
+\end{part}
+ 
+% Problem 7b
+\begin{part}
+
+\textbf{Answer:} \fbox{$\frac{P(S \cap H)}{(S)} = \frac{\frac{\frac{7!}{2!(7-2)!} - \frac{5!}{2!(5-2)!}}{\frac{9!}{4!(9-4)!}}}{\frac{1}{6}} = \frac{11}{21} \approx 0.524$}
+
+\textbf{Explanation:} 
+If the Maestro already holds the King of Hearts and the Ace and Ten of Spades, what is the probability that he holds at least one additional Heart? He needs 2 more cards in his hand and 7 remain so there are $\frac{7!}{2!(7-2)!} = 21$ total ways his hand could be arranged. Of those there are $\frac{5!}{2!(5-2)!} = 10$ ways his hand could be arranged without an additional Heart. By complement therefore, there are $21 - 10 = 11$ ways he chould have a Heart. There are a total of $\frac{9!}{4!(9-4)!} = 126$ ways his hand of 4 from the remaining 9 cards could be arranged. The probability that the Maestro holds a Heart in addition to the King of Hearts and that he holds the Ace and Ten of Spades is $\frac{11}{126} \approx 0.0873015873$. Therefore the probability that he holds a Heart in addition to the King of Hearts given that he holds the Ace and Ten of Spades is $\frac{11}{21} \approx 0.5238095238$.
+\end{part}
+
+% Problem 7c
+\begin{part}
+
+\textbf{Answer:} \fbox{$P(S) * P(H | S) = \frac{1}{6} * \frac{11}{21} = \frac{11}{126} \approx 0.0873$}
+
+\textbf{Explanation:} 
+The probability that the Maestro holds a Heart in addition to the King of Hearts given that he holds the Ace and Ten of Spades is known from part (b) to be $\frac{11}{126} \approx 0.087$. The probability that he holds the Ace and Ten of Spades is known from part (a) to be $\frac{2}{7} \approx 0.286$. By rearranging $P(H | S) = \frac{P(H \cap S)}{P(S)}$ to $P(S) * P(H | S) = P(H \cap S)$ the probability that the Maestro holds the Ace and Ten of Hearts in addition to a Heart and of your losing the game is $\frac{11}{21} * \frac{1}{6} = \frac{11}{126} \approx 0.0873015873$. 
+\end{part}
+
+\end{question}
+
+\end{document}
